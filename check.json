@@ -1,5 +1,8 @@
 {
-  "remarks": "REACH-PANEL-INDIA",
+  "remarks": "Powercheats-INDIA",
+  "log": {
+    "loglevel": "warning"
+  },
   "inbounds": [
     {
       "listen": "127.0.0.1",
@@ -49,7 +52,9 @@
         "security": "tls",
         "tlsSettings": {
           "serverName": "screenshots-approval-temporary-reminder.trycloudflare.com",
-          "alpn": ["http/1.1"],
+          "alpn": [
+            "http/1.1"
+          ],
           "fingerprint": "chrome"
         },
         "wsSettings": {
@@ -63,23 +68,32 @@
     },
     {
       "protocol": "freedom",
+      "settings": {},
       "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "block"
     }
   ],
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
       {
+        "type": "field",
         "network": "tcp",
-        "outboundTag": "direct",
-        "port": "0-7005,7007-39599,39901-65535"
+        "port": "0-7005,7007-39599,39901-65535",
+        "outboundTag": "direct"
       },
       {
+        "type": "field",
         "network": "udp",
-        "outboundTag": "direct",
-        "port": "0-10009,10021-65535"
+        "port": "0-10009,10021-65535",
+        "outboundTag": "direct"
       },
       {
+        "type": "field",
         "network": "tcp,udp",
         "outboundTag": "proxy"
       }
