@@ -1,69 +1,85 @@
 {
-  "log": {
-    "loglevel": "warning"
-  },
+  "remarks": "REACH-PANEL-INDIA",
   "inbounds": [
     {
-      "tag": "socks-in",
-      "protocol": "socks",
       "listen": "127.0.0.1",
       "port": 10808,
+      "protocol": "socks",
       "settings": {
         "auth": "noauth",
         "udp": true
       },
       "sniffing": {
-        "enabled": false
-      }
+        "destOverride": ["http", "tls", "quic"],
+        "enabled": true
+      },
+      "tag": "socks-in"
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10809,
+      "protocol": "http",
+      "sniffing": {
+        "destOverride": ["http", "tls", "quic"],
+        "enabled": true
+      },
+      "tag": "http-in"
     }
   ],
   "outbounds": [
     {
-      "tag": "proxy",
-      "protocol": "socks",
+      "protocol": "vless",
       "settings": {
-        "servers": [
+        "vnext": [
           {
-            "address": "bytesx.toulouse-digital31.fr",
-            "port": 8443,
+            "address": "screenshots-approval-temporary-reminder.trycloudflare.com",
+            "port": 443,
             "users": [
               {
-                "user": "751f24c333a383d7b1b2e205a52c249b",
-                "pass": "v1.498564.5dfce203.9cc6bbf04fe4a713e1f36961"
+                "id": "9c4e7b2a-8f1d-4e6a-b3c5-7d2a9f4e1b86",
+                "encryption": "none",
+                "level": 0
               }
             ]
           }
         ]
-      }
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "screenshots-approval-temporary-reminder.trycloudflare.com",
+          "alpn": ["http/1.1"],
+          "fingerprint": "chrome"
+        },
+        "wsSettings": {
+          "headers": {
+            "Host": "screenshots-approval-temporary-reminder.trycloudflare.com"
+          },
+          "path": "/Powercheats"
+        }
+      },
+      "tag": "proxy"
     },
     {
-      "tag": "direct",
       "protocol": "freedom",
-      "settings": {}
-    },
-    {
-      "tag": "block",
-      "protocol": "blackhole",
-      "settings": {}
+      "tag": "direct"
     }
   ],
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
       {
-        "type": "field",
         "network": "tcp",
-        "port": "0-7005,7007-39599,39901-65535",
-        "outboundTag": "direct"
+        "outboundTag": "direct",
+        "port": "0-7005,7007-39599,39901-65535"
       },
       {
-        "type": "field",
         "network": "udp",
-        "port": "0-10009,10021-65535",
-        "outboundTag": "direct"
+        "outboundTag": "direct",
+        "port": "0-10009,10021-65535"
       },
       {
-        "type": "field",
         "network": "tcp,udp",
         "outboundTag": "proxy"
       }
